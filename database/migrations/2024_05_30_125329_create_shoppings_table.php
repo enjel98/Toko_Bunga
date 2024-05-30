@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('shoppings', function (Blueprint $table) {
             $table->id();
-            $table->string('barcode');
-            $table->string('name');
-            $table->decimal('price', 20, 0);
-            $table->softDeletes();
+            $table->integer('id_product');
+            $table->string('name_customer')->nullable();
+            $table->integer('qty')->default(0);
+            $table->string('description')->nullable();
             $table->timestamps();
-    });
-}
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('shoppings');
     }
 };

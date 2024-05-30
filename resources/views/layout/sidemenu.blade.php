@@ -16,6 +16,16 @@
                      with font-awesome or any other icon font library -->
                 @can('admin')
                 @endcan
+
+                <li class="nav-item">
+                    <a href="{{ url('/kategori')}}" class="nav-link">
+                        <i class="nav-icon fas fa-bars"></i>
+                        <p>
+                            Data Kategori
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ url('/products')}}" class="nav-link">
                         <i class="nav-icon fas fa-store"></i>
@@ -26,10 +36,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ url('/kategori')}}" class="nav-link">
-                        <i class="nav-icon fas fa-bars"></i>
+                    <a href="{{route('shopping.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-bag"></i>
                         <p>
-                            Data Kategori
+                            Shopping
                         </p>
                     </a>
                 </li>

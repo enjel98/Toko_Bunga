@@ -17,19 +17,19 @@ class ProductSeeder extends Seeder
         #product1
         $p = new Product();
         $p->barcode = $faker->numerify('######');
-        $p->name = 'LCD Epson';
+        $p->name = 'Bunga Mawar';
         $p->price = 4500000;
         $p->save();
         #product2
         $p = new Product();
         $p->barcode = $faker->numerify('######');
-        $p->name = 'Permen Kopiko';
+        $p->name = 'Bunga melati';
         $p->price = 2000;
         $p->save();
         #product3
         $p = new Product();
         $p->barcode = $faker->numerify('######');
-        $p->name = 'Ac Sharp Inverter 2PK';
+        $p->name = 'Bunga Anggrek';
         $p->price = 7500000;
         $p->save();
         #product4
@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
         #product5
         $p = new Product();
         $p->barcode = $faker->numerify('######');
-        $p->name = 'Spidol Snowman';
+        $p->name = 'Bunga Putri Malu';
         $p->price = 15000;
         $p->save();
         #php artisan db:seed --class=ProductSeeder

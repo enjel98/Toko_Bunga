@@ -8,6 +8,7 @@ use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShoppingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,7 +34,7 @@ Route::post('/register', [AuthController::class, 'registerProceed']);
 Route::get('/register/activation/{token}', [AuthController::class, 'registerVerify']);
 
 
-Route::get('mail/test',function (){
+Route::get('mail/test', function () {
     Illuminate\Support\Facades\Mail::to('enjel@gamail.com')
         ->queue(new \App\Mail\TestMail());
 
@@ -50,14 +51,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'kategori'], function () {
 });
 
 
-
 Route::group(['prefix' => 'app', 'middleware' => 'auth'], function () {
     Route::get('/', [KasirController::class, 'index']);
 
     Route::post('/search-barcode', [KasirController::class, 'searchProduct']);
     Route::post('/insert', [KasirController::class, 'insert']);
 
-    });
+});
 
 Route::group(['middleware' => 'auth', 'prefix' => 'products'], function () {
     Route::get('/', [ProductController::class, 'list'])->name('products.index');
@@ -67,6 +67,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'products'], function () {
     Route::post('/update', [ProductController::class, 'update']);
     Route::post('/insert', [ProductController::class, 'insert']);
     Route::post('/delete', [ProductController::class, 'delete']);
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'shopping'], function () {
+    Route::get('/', [ShoppingController::class, 'list'])->name('shopping.index');
+    Route::get('/add', [ShoppingController::class, 'add'])->name('shopping.add');
+    Route::post('/insert', [ShoppingController::class, 'insert'])->name('shopping.insert');
 });
 
 Route::group(['prefix' => 'transaksi', 'middleware' => 'auth'], function () {

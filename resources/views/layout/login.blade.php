@@ -19,14 +19,14 @@
     <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition login-page">
+<body class="hold-transition login-page bg-primary">
 <div class="login-box">
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
-            <a href="#" class="h1"><b>TOKO</b>BUNGA</a>
+            <a href="#" class="h1" style="color: #0c84ff; font-weight: bold"><b style="color: red">TOKO</b>BUNGA</a>
         </div>
-        <div class="card-body">
+        <div class="card-body bg-light">
             @yield('content')
         </div>
         <!-- /.card-body -->

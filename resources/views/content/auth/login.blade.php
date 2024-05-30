@@ -3,7 +3,7 @@
 @section('judul','Login')
 
 @section('content')
-    <p class="login-box-msg">Silahkan Login</p>
+    <p class="login-box-msg" style="color: #0a0e14">Silahkan Login</p>
     <form action="/login/verify" method="post">
         @csrf
         <div class="input-group mb-3">
@@ -22,8 +22,13 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">LOGIN</button>
-        <a href="/register" class="btn btn-info btn-block">Register</a>
+        <div class="col-md-12">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Login</button>
+                <br>
+                <span style="color: #0f401b">Belum punya akun/ <a href="/register">Register</a></span>
+            </div>
+        </div>
 
     </form>
 @endsection

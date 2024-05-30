@@ -11,7 +11,7 @@
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-user"></i> {{auth()->user()->email}}
+                <i class="far fa-user"></i> {{auth()->user()->name}}
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <a href="/user/change-password" class="dropdown-item">
