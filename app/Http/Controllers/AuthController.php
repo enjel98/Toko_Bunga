@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -17,25 +20,19 @@ class AuthController extends Controller
 
     public function verify(Request $request)
     {
-        $credentials = $request->validate([
+        Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
-        ]);
-        #kondisi dimana data tidak ada yang kosong
-        $pesanError = 'Kombinasi Email dan Password Tidak ditemukan';
-        $user = User::query()
-            ->where('email', $request->email)
-            ->where('is_active', 1)
-            ->first();
-        if ($user !== null) {
-            if (password_verify($request->password, $user->password)) {
-                #kondisi dimana passwordnya terverifikasi
-                Auth::login($user);
-                $request->session()->regenerate();
-                return redirect('/dashboard');
-            }
+        ])->validate();
+
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean("remember"))){
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed')
+            ]);
         }
-        return redirect()->back()->with('gagal', $pesanError);
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard');
     }
 
     public function register()
@@ -46,7 +43,6 @@ class AuthController extends Controller
     public function registerProceed(Request $request)
     {
         #tugas buat validasi
-
         #kondisi semua data ada
         $name = $request->name;
         $email = $request->email;
@@ -59,13 +55,13 @@ class AuthController extends Controller
         $user = new User();
         $user->name = $name;
         $user->email = $email;
-        $user->password = password_hash($password, PASSWORD_DEFAULT);
+        $user->password = bcrypt($password);
         $user->is_active = 0;
-        $user->token_activation = md5($email . date('Y-m-dH:i:s'));
+        $user->token_activation = Str::random(50);
         $user->save();
         #kirim email.
-        Mail::to($user->email)->queue(new RegisterMail($user));
-        return redirect('/login')->with('sukses', 'Registrasi Berhasil, cek email anda untuk aktivasi');
+        #Mail::to($user->email)->queue(new RegisterMail($user));
+        return redirect()->route('login')->with('success', 'Registrasi Berhasil, cek email anda untuk aktivasi');
     }
 
     public function registerVerify($token)
@@ -73,12 +69,12 @@ class AuthController extends Controller
         #get user by token
         $user = User::query()->where('token_activation', $token)->first();
         if ($user === null) {
-            return redirect('/login')->with('gagal', 'Token tidak ditemukan');
+            return redirect('/login')->with('success', 'Token tidak ditemukan');
         }
         #user ada
         $user->token_activation = null;
         $user->is_active = 1;
         $user->save();
-        return redirect('/login')->with('sukses', 'Aktivasi Berhasil, anda sudah bisa login');
+        return redirect('/login')->with('success', 'Aktivasi Berhasil, anda sudah bisa login');
     }
 }

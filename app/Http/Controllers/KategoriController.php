@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori; // Ensure the model name matches your class definition
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class KategoriController extends Controller
 {
@@ -17,24 +20,29 @@ class KategoriController extends Controller
     {
         return view('content.kategori.add');
     }
-
     public function prosesTambah(Request $request)
     {
-        $this->validate($request, [
-            'nama_kategori' => 'required'
+        // Validate the request data
+        $request->validate([
+        'nama_kategori' => 'required'
         ]);
 
-        $kategori = new Kategori();
-        $kategori->nama_kategori = $request->nama_kategori;
-
+        DB::beginTransaction();
         try {
+            // Create a new instance of Kategori
+            $kategori = new Kategori();
+            $kategori->nama_kategori = $request->nama_kategori;
             $kategori->save();
-            return redirect(route('kategori.index'))->with('pesan', ['Success', 'Berhasil Tambah Kategori']);
-        } catch (\Exception $e) {
-            return redirect(route('kategori.index'))->with('pesan', ['Danger', 'Gagal Tambah Kategori']);
-        }
-    }
 
+       DB::commit();
+       Session::flash('message', ['Berhasil tambah kategori', 'success']);
+       } catch (\Exception $e) {
+       DB::rollback();
+       Session::flash('message', ['Gagal tambah kategori', 'error']);
+       }
+       return redirect()->route('kategori.index');
+
+    }
     public function ubah($id)
     {
         $kategori = Kategori::findOrFail($id);
@@ -47,16 +55,21 @@ class KategoriController extends Controller
             'id_kategori' => 'required',
             'nama_kategori' => 'required',
         ]);
-
-        $kategori = Kategori::findOrFail($request->id_kategori); // Use the correct model name
-        $kategori->nama_kategori = $request->nama_kategori;
-
+        DB::beginTransaction();
         try {
-            $kategori->save();
-            return redirect(route('kategori.index'))->with('pesan', ['Success', 'Berhasil Ubah Kategori']);
+
+        $kategori = Kategori::findOrFail($request->id_kategori);
+        $kategori->nama_kategori = $request->nama_kategori;
+        $kategori->save();
+
+        DB::commit();
+        Session::flash('message', ['Berhasil ubah data kategori', 'success']);
         } catch (\Exception $e) {
-            return redirect(route('kategori.index'))->with('pesan', ['Danger', 'Gagal Ubah Kategori']);
+        DB::rollback();
+        Session::flash('message', ['Gagal ubah data kategori', 'error']);
         }
+        return redirect()->route('kategori.index');
+
     }
 
     public function hapus($id)
@@ -65,9 +78,11 @@ class KategoriController extends Controller
 
         try {
             $kategori->delete();
-            return redirect(route('kategori.index'))->with('pesan', ['Success', 'Berhasil Hapus Kategori']);
+            return redirect()->route('kategori.index')->with('pesan', ['Success', 'Berhasil Hapus Kategori']);
+
         } catch (\Exception $e) {
-            return redirect(route('kategori.index'))->with('pesan', ['Danger', 'Gagal Hapus Kategori']);
+            return redirect()->route('kategori.index')->with('pesan', ['Danger', 'Gagal Hapus Kategori']);
+
         }
     }
 }

@@ -10,8 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>TOKO BUNGA | @yield('judul')</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
 
@@ -21,81 +20,115 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- Navbar -->
-    @include('layout.header')
-    <!-- /.navbar -->
+        <!-- Navbar -->
+        @include('layout.header')
+        <!-- /.navbar -->
 
-    <!-- Main Sidebar Container -->
-    @include('layout.sidemenu')
+        <!-- Main Sidebar Container -->
+        @include('layout.sidemenu')
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">@yield('judul')</h1>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">@yield('judul')</h1>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    @yield('content')
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
         </div>
-        <!-- /.content-header -->
+        <!-- /.content-wrapper -->
 
-        <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
-                @yield('content')
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+            </div>
+            <!-- Default to the left -->
+        </footer>
     </div>
-    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-        <div class="p-3">
-            <h5>Title</h5>
-            <p>Sidebar content</p>
-        </div>
-    </aside>
-    <!-- /.control-sidebar -->
+    <!-- REQUIRED SCRIPTS -->
 
-    <!-- Main Footer -->
-    <footer class="main-footer">
-        <!-- To the right -->
-        <div class="float-right d-none d-sm-inline">
-        </div>
-        <!-- Default to the left -->
-    </footer>
-</div>
-<!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- REQUIRED SCRIPTS -->
+    <script src="/assets/plugins/toastr/toastr.min.js"></script>
+    {{--  <script src="/assets/dist/js/adminlte.min.js"></script>
+    <script>
+        $(function() {
 
-<!-- jQuery -->
-<script src="/assets/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            @if(session() - > has('gagal'))
+            toastr.error('{{Session::get('
+                gagal ')}}', 'Error')
+            @endif
+            @if(session() - > has('berhasil'))
+            toastr.success('{{Session::get('
+                berhasil ')}}', 'Berhasil')
+            @endif
+        });
 
-<script src="/assets/plugins/toastr/toastr.min.js"></script>
-<script src="/assets/dist/js/adminlte.min.js"></script>
-<script>
-    $(function () {
+    </script>  --}}
+    <script>
+        const Toast = Swal.mixin({
+            toast: true
+            , position: 'top-end'
+            , showConfirmButton: false
+            , timer: 3000
+            , timerProgressBar: true
+            , onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
 
-        @if(session()->has('gagal'))
-        toastr.error('{{Session::get('gagal')}}', 'Error')
-        @endif
-        @if(session()->has('berhasil'))
-        toastr.success('{{Session::get('berhasil')}}', 'Berhasil')
-        @endif
-    });
-</script>
-@stack('js')
+    </script>
+
+
+    @if(\Session::has('message'))
+    @php
+    $message = Session::get('message');
+    @endphp
+    <script>
+        $(function() {
+            Toast.fire({
+                icon: "{{$message[1]}}"
+                , title: "{{$message[0]}}"
+            });
+        });
+
+    </script>
+    @endif
+
+    @stack('js')
 </body>
 </html>

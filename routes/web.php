@@ -29,8 +29,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'user'], function () {
     Route::post('/change-password', [TestingController::class, 'updatePassword']);
 });
 
-Route::get('/register', [AuthController::class, 'register']);
-Route::post('/register', [AuthController::class, 'registerProceed']);
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'registerProceed'])->name('register.proceed');
 Route::get('/register/activation/{token}', [AuthController::class, 'registerVerify']);
 
 
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'transaksi', 'middleware' => 'auth'], function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth');
+    ->middleware('auth')->name('dashboard');
 
 Route::get('files/{filename}', function ($filename) {
     $path = storage_path('app/public/' . $filename);

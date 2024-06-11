@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class ProductController extends Controller
 {
@@ -16,26 +19,31 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'stok' => 'required|integer'
         ]);
+        DB::beginTransaction();
+        try {
 
         $product = Product::find($request->id);
         if ($product === null) {
             abort(404);
         }
-
         $product->barcode = $request->barcode;
         $product->name = $request->name;
         $product->price = $request->price;
         $product->stok = $request->stok;
-
-
         if ($request->hasFile('gambar_bunga')) {
             $request->file('gambar_bunga')->store('public');
             $gambar_bunga = $request->file('gambar_bunga')->hashName();
             $product->gambar_bunga = $gambar_bunga;
         }
-
         $product->save();
-        return redirect(url('/products'));
+
+       DB::commit();
+       Session::flash('message', ['Berhasil ubah product', 'success']);
+       } catch (\Exception $e) {
+       DB::rollback();
+       Session::flash('message', ['Gagal ubah product', 'error']);
+       }
+       return redirect()->route('products.index');
     }
 
 
@@ -72,19 +80,28 @@ class ProductController extends Controller
             'gambar_bunga' => 'required',
             'stok' => 'required|integer'
         ]);
+        DB::beginTransaction();
+        try {
 
-        $request->file('gambar_bunga')->store('public');
-        $gambar_bunga = $request->file('gambar_bunga')->hashName();
+            $request->file('gambar_bunga')->store('public');
+            $gambar_bunga = $request->file('gambar_bunga')->hashName();
 
-        $product = new Product();
-        $product->barcode = $request->barcode;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->id_kategori = $request->id_kategori;
-        $product->gambar_bunga = $gambar_bunga;
-        $product->stok = $request->stok;
-        $product->save();
-        return redirect(url('/products'));
+            $product = new Product();
+            $product->barcode = $request->barcode;
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->id_kategori = $request->id_kategori;
+            $product->gambar_bunga = $gambar_bunga;
+            $product->stok = $request->stok;
+            $product->save();
+       DB::commit();
+       Session::flash('message', ['Berhasil tambah product', 'success']);
+       } catch (\Exception $e) {
+       DB::rollback();
+       Session::flash('message', ['Gagal tambah product', 'error']);
+       }
+       return redirect()->route('products.index');
+
 
 
     }
@@ -103,4 +120,3 @@ class ProductController extends Controller
         return view('content.product.add', compact('kategori'));
     }
 }
-
