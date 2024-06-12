@@ -43,6 +43,15 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('order.index') }}" class="nav-link {{ Request::is('order') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>
+                            Data Order
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ url('/app') }}" class="nav-link {{ Request::is('app') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>

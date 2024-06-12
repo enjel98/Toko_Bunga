@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
 })->middleware('auth');
+
+
+Route::get('/page', [PageController::class, 'index'])->name('home-page.index');
+Route::post('/page/simpanOrder', [PageController::class, 'simpanPreorder'])->name('home-page.simpanPreorder');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login/verify', [AuthController::class, 'verify']);
@@ -67,6 +73,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'products'], function () {
     Route::post('/update', [ProductController::class, 'update']);
     Route::post('/insert', [ProductController::class, 'insert']);
     Route::post('/delete', [ProductController::class, 'delete']);
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'order'], function () {
+    Route::get('/', [OrderController::class, 'index'])->name('order.index');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'shopping'], function () {
