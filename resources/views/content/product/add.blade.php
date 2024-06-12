@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Kategori Berita</label>
+                            <label class="form-label">Kategori Bunga</label>
                             <select name="id_kategori" class="form-control @error('id_kategori') is-invalid @enderror">
                                 @foreach ($kategori as $row)
                                     <option value="{{$row->id_kategori}}">{{$row->nama_kategori}}</option>
