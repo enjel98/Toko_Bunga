@@ -50,7 +50,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'kategori'], function () {
     Route::get('/export-pdf', [App\Http\Controllers\KategoriController::class, 'exportPdf'])->name('kategori.exportPdf');
 });
 
-
 Route::group(['prefix' => 'app', 'middleware' => 'auth'], function () {
     Route::get('/', [KasirController::class, 'index']);
 
