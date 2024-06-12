@@ -17,35 +17,31 @@ class ProductController extends Controller
             'barcode' => 'required',
             'name' => 'required',
             'price' => 'required|integer',
-            'stok' => 'required|integer'
+            'gambar_bunga' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         DB::beginTransaction();
         try {
-
-        $product = Product::find($request->id);
-        if ($product === null) {
-            abort(404);
+            $product = Product::find($request->id);
+            if ($product === null) {
+                abort(404);
+            }
+            $product->barcode = $request->barcode;
+            $product->name = $request->name;
+            $product->price = $request->price;
+            if ($request->hasFile('gambar_bunga')) {
+                $path = $request->file('gambar_bunga')->store('public');
+                $gambar_bunga = basename($path);
+                $product->gambar_bunga = $gambar_bunga;
+            }
+            $product->save();
+            DB::commit();
+            Session::flash('message', ['Berhasil ubah product', 'success']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Session::flash('message', ['Gagal ubah product', 'error']);
         }
-        $product->barcode = $request->barcode;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->stok = $request->stok;
-        if ($request->hasFile('gambar_bunga')) {
-            $request->file('gambar_bunga')->store('public');
-            $gambar_bunga = $request->file('gambar_bunga')->hashName();
-            $product->gambar_bunga = $gambar_bunga;
-        }
-        $product->save();
-
-       DB::commit();
-       Session::flash('message', ['Berhasil ubah product', 'success']);
-       } catch (\Exception $e) {
-       DB::rollback();
-       Session::flash('message', ['Gagal ubah product', 'error']);
-       }
-       return redirect()->route('products.index');
+        return redirect()->route('products.index');
     }
-
 
     public function edit(Request $request, $id)
     {
@@ -77,14 +73,12 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'id_kategori' => 'required',
-            'gambar_bunga' => 'required',
-            'stok' => 'required|integer'
+            'gambar_bunga' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         DB::beginTransaction();
         try {
-
-            $request->file('gambar_bunga')->store('public');
-            $gambar_bunga = $request->file('gambar_bunga')->hashName();
+            $path = $request->file('gambar_bunga')->store('public');
+            $gambar_bunga = basename($path);
 
             $product = new Product();
             $product->barcode = $request->barcode;
@@ -92,18 +86,14 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->id_kategori = $request->id_kategori;
             $product->gambar_bunga = $gambar_bunga;
-            $product->stok = $request->stok;
             $product->save();
-       DB::commit();
-       Session::flash('message', ['Berhasil tambah product', 'success']);
-       } catch (\Exception $e) {
-       DB::rollback();
-       Session::flash('message', ['Gagal tambah product', 'error']);
-       }
-       return redirect()->route('products.index');
-
-
-
+            DB::commit();
+            Session::flash('message', ['Berhasil tambah product', 'success']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Session::flash('message', ['Gagal tambah product', 'error']);
+        }
+        return redirect()->route('products.index');
     }
 
     public function list()

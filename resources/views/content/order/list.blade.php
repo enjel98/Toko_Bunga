@@ -6,45 +6,36 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-primary mb-2" href="{{ url('products/add') }}">Tambah Data Product</a>
+                    <a class="btn btn-primary mb-2" href="{{ url('order/list') }}">Tambah Data Product</a>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Gambar</th>
-                                <th>Barcode</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Kategori</th>
-                                <th>Stok</th>
-                                <th>Action</th>
-                            </tr>
+                            <th>No</th>
+                            <th>User</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Total Price</th>
+                            <th>Pre Order Date</th>
+                            <th>Delivery Date</th>
+                            <th>Action</th>
                             </thead>
                             <tbody>
                             @php
-                                $i = ($products->currentPage() - 1) * $products->perPage() + 1;
+                                $i = ($orders->currentPage() - 1) * $orders->perPage() + 1;
                             @endphp
-                            @foreach($products as $product)
+                            @foreach($orders as $order)
                                 <tr>
                                     <td>{{ $i++ }}</td>
-                                    <td><img src="{{ asset('storage/' . $product->gambar_bunga) }}" alt="{{ $product->name }}" width="50"></td>
-                                    <td>{{ $product->barcode }}</td>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>
-                                        @if($product->kategori)
-                                            {{ $product->kategori->nama_kategori }}
-                                        @else
-                                            Kategori Tidak Tersedia
-                                        @endif
-                                    </td>
-                                    <td>{{ $product->stok }}</td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm" href="{{ url('products/edit/' . $product->id) }}">
+                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ $order->product->name }}</td>
+                                    <td>{{ $order->quantity }}</td>
+                                    <td>{{ $order->total_price }}</td>
+                                    <td>{{ $order->pre_order_date }}</td>
+                                    <td>{{ $order->delivery_date }}</td>
+                                        <a class="btn btn-warning btn-sm" href="{{ url('$orders/edit/' . $order->id) }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" data-id-product="{{ $product->id }}" data-name="{{ $product->name }}" class="btn btn-danger btn-sm btn-hapus">
+                                        <button type="button" data-id-product="{{ $order->id }}" data-name="{{ $order->name }}" class="btn btn-danger btn-sm btn-hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>

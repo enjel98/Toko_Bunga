@@ -33,14 +33,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{route('shopping.index')}}" class="nav-link {{ Request::is('shopping') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-shopping-bag"></i>
-                        <p>
-                            Shopping
-                        </p>
-                    </a>
-                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('order.index') }}" class="nav-link {{ Request::is('order') ? 'active' : '' }}">

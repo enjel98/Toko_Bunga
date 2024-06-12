@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\TransaksiController;
@@ -56,7 +57,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'kategori'], function () {
     Route::get('/export-pdf', [App\Http\Controllers\KategoriController::class, 'exportPdf'])->name('kategori.exportPdf');
 });
 
-
 Route::group(['prefix' => 'app', 'middleware' => 'auth'], function () {
     Route::get('/', [KasirController::class, 'index']);
 
@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'products'], function () {
     Route::post('/delete', [ProductController::class, 'delete']);
 });
 
+<<<<<<< HEAD
 Route::group(['middleware' => 'auth', 'prefix' => 'order'], function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
 });
@@ -84,6 +85,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'shopping'], function () {
     Route::get('/add', [ShoppingController::class, 'add'])->name('shopping.add');
     Route::post('/insert', [ShoppingController::class, 'insert'])->name('shopping.insert');
 });
+=======
+
+>>>>>>> fb43bbbd7427b5d7af1000be7cb19f9478952c63
 
 Route::group(['prefix' => 'transaksi', 'middleware' => 'auth'], function () {
     Route::get('/', [TransaksiController::class, 'index']);
@@ -108,28 +112,4 @@ Route::get('files/{filename}', function ($filename) {
 
 
 
-//Route::group([
-//    'middleware' => ['auth', 'role.admin'],
-//    'prefix' => 'teacher'
-//], function () {
-//    Route::get('/', [TeacherController::class, 'list']);
-////    Route::get('/{id}',[TeacherController::class,'detail']);
-//    Route::get('/add', [TeacherController::class, 'add']);
-//    Route::get('/export/excel', [TeacherController::class, 'excel'])->name('tch.excel');
-//    Route::get('/edit/{id}', [TeacherController::class, 'edit'])->middleware('role.superadmin');
-//
-//    Route::post('/insert', [TeacherController::class, 'insert']);
-//    Route::post('/update', [TeacherController::class, 'update'])->middleware('role.superadmin');
-//    Route::post('/delete', [TeacherController::class, 'delete'])->middleware('role.superadmin');
-//});
-//
-//
-//Route::group(['middleware'=>'auth','prefix'=>'student'], function(){
-//    Route::get('/',[StudentController::class,'list']);
-//    Route::get('/add',[StudentController::class,'add']);
-//    Route::get('/edit/{id}',[StudentController::class,'edit']);
-//
-//    Route::post('/update',[StudentController::class,'update']);
-//    Route::post('/insert',[StudentController::class,'insert']);
-//    Route::post('/delete',[StudentController::class,'delete']);
-//});
+
