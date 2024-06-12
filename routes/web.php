@@ -9,9 +9,7 @@ use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ShoppingController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,19 +73,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'products'], function () {
     Route::post('/delete', [ProductController::class, 'delete']);
 });
 
-<<<<<<< HEAD
+
 Route::group(['middleware' => 'auth', 'prefix' => 'order'], function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
 });
-
-Route::group(['middleware' => 'auth', 'prefix' => 'shopping'], function () {
-    Route::get('/', [ShoppingController::class, 'list'])->name('shopping.index');
-    Route::get('/add', [ShoppingController::class, 'add'])->name('shopping.add');
-    Route::post('/insert', [ShoppingController::class, 'insert'])->name('shopping.insert');
-});
-=======
-
->>>>>>> fb43bbbd7427b5d7af1000be7cb19f9478952c63
 
 Route::group(['prefix' => 'transaksi', 'middleware' => 'auth'], function () {
     Route::get('/', [TransaksiController::class, 'index']);
