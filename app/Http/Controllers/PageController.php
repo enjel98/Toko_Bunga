@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -12,7 +13,8 @@ class PageController extends Controller
     public function index()
     {
         $shoppings = Order::orderBy('id', 'desc')->get();
-        return view('pages.home', compact('shoppings'));
+        $products = Product::orderBy('id', 'desc')->get();
+        return view('pages.home', compact('shoppings', 'products'));
     }
 
     public function simpanPreorder(Request $request){
