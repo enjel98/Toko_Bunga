@@ -14,7 +14,14 @@
                      with font-awesome or any other icon font library -->
                 @can('admin')
                 @endcan
-
+                <li class="nav-item">
+                    <a href="{{ url('/kategori') }}" class="nav-link {{ Request::is('kategori') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-bars"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ url('/kategori') }}" class="nav-link {{ Request::is('kategori') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-bars"></i>
