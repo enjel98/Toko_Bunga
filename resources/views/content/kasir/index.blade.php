@@ -1,36 +1,75 @@
 @extends('layout.main')
-@section('judul','Aplikasi Kasir')
+@section('judul', 'Aplikasi Kasir')
 
 @section('content')
     <div class="row">
         <div class="col-12">
-            <input type="text" id="input-barcode" name="barcode"class="form-control" placeholder="Scan Barcode"/>
-        </div>
-    </div>
-    <form method="post" action="{{url('/app/insert')}}">
-        <div class="row">
-            @csrf
-            <div class="col-8 mt-3">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table" id="table-cart">
-                            <thead>
-                            <tr>
-                                <th>Barcode</th>
-                                <th>Nama Produk</th>
-                                <th>@</th>
-                                <th>Qty</th>
-                                <th>SubTotal</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <label for="" class="col-4 col-form-label">Search Bunga</label>
+                        <div class="col-6">
+                            <input type="text" id="input-barcode" name="barcode"class="form-control"
+                                placeholder="Search Barcode" />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4 mt-3">
+        </div>
+    </div>
+    <form method="post" action="{{ url('/app/insert') }}">
+        <div class="row">
+            @csrf
+            <div class="col-12 mt-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover" id="table-cart">
+                                <thead>
+                                    <tr>
+                                        <th>Barcode</th>
+                                        <th>Nama Bunga</th>
+                                        <th>@Harga</th>
+                                        <th>Qty</th>
+                                        <th>SubTotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td>Subtotal</td>
+                                        <td>
+                                            <input type="text" readonly name="subtotal" id="subtotal"
+                                                class="form-control text-right form-control-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td>Discount (%)</td>
+                                        <td>
+                                            <input type="number" min="0" max="100" name="discount"
+                                                id="discount" value='0'
+                                                class="form-control form-control-sm text-right">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td>Total</td>
+                                        <td>
+                                            <input type="text" readonly name="total" id="total"
+                                                class="form-control form-control-sm text-right">
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="col-4 mt-3">
                 <div class="card">
                     <div class="card-body">
                         <table width="100%">
@@ -38,20 +77,21 @@
                                 <td>
                                     <label for="">Subtotal</label>
                                     <input type="text" readonly name="subtotal" id="subtotal"
-                                           class="form-control text-right">
+                                        class="form-control text-right">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label for="">Discount (%)</label>
                                     <input type="number" min="0" max="100" name="discount" id="discount"
-                                           value='0' class="form-control text-right">
+                                        value='0' class="form-control text-right">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label for="">Total</label>
-                                    <input type="text" readonly name="total" id="total" class="form-control text-right">
+                                    <input type="text" readonly name="total" id="total"
+                                        class="form-control text-right">
                                 </td>
                             </tr>
                         </table>
@@ -60,7 +100,7 @@
                         <button type="submit" class="btn btn-primary btn-block">Simpan</button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </form>
 
@@ -68,8 +108,8 @@
 
 @push('js')
     <script>
-        $(function () {
-            $('#input-barcode').on('keypress', function (e) {
+        $(function() {
+            $('#input-barcode').on('keypress', function(e) {
                 if (e.which === 13) {
                     console.log('Enter di klik');
                     //pencarian data via ajax
@@ -77,16 +117,17 @@
                         url: '/app/search-barcode',
                         type: 'POST',
                         data: {
-                            _token: '{{csrf_token()}}',
+                            _token: '{{ csrf_token() }}',
                             barcode: $(this).val()
                         },
-                        success: function (data) {
+                        success: function(data) {
                             addProductToTable(data);
-                            toastr.success('Barang Berhasil masuk ke keranjang belanja', 'Berhasil');
+                            toastr.success('Barang Berhasil masuk ke keranjang belanja',
+                                'Berhasil');
                             $('#input-barcode').val('');
 
                         },
-                        error: function () {
+                        error: function() {
                             toastr.error('Barang yang dicari tidak ditemukan', 'Error');
                             $('#input-barcode').val('');
                         }
@@ -122,7 +163,7 @@
 
             function hitungTotalBelanja() {
                 let subtotal = 0;
-                $.each($('.price'), function (index, obj) {
+                $.each($('.price'), function(index, obj) {
                     let price = $(this).val();
                     let qty = $('.qty').eq(index).val();
                     subtotal += parseInt(price) * parseInt(qty);
@@ -134,7 +175,7 @@
                 $('#total').val(total);
             }
 
-            $('#discount').on('change', function () {
+            $('#discount').on('change', function() {
                 hitungTotalBelanja();
             });
         });
