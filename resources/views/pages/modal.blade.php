@@ -11,12 +11,13 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" value="{{ $bunga->id }}">
                     <input type="hidden" name="price" class="price-bunga" value="{{ $bunga->price }}">
+                    
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="">Nama Bunga</label>
-                                <input type="text" name="name_bunga" class="form-control" value="{{ $bunga->name }}"
-                                    placeholder="Silahkan masukkan nama">
+                                <input type="text" class="form-control" value="{{ $bunga->name }}"
+                                    placeholder="Silahkan masukkan nama" readonly>
                             </div>
                         </div>
                         <div class="col-12">

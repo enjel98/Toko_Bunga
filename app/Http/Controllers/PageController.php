@@ -12,8 +12,14 @@ class PageController extends Controller
 {
     public function index()
     {
-        $shoppings = Order::orderBy('id', 'desc')->get();
+        $shoppings = DB::table('orders')
+        ->join('products', 'orders.id_products', '=', 'products.id')
+        ->select('orders.*','products.name as product_name', 'products.price as product_price')
+        ->orderBy('orders.id', 'desc')
+        ->get();
+       
         $products = Product::orderBy('id', 'desc')->get();
+
         return view('pages.home', compact('shoppings', 'products'));
     }
 
@@ -21,7 +27,9 @@ class PageController extends Controller
         DB::beginTransaction();
         try {
 
+            $products = Product::where('id', $request->id)->first();
             $data = new Order();
+            $data->id_products = $products->id;
             $data->name_customer = $request->name_customer;
             $data->qty_order = $request->qty_order;
             $data->tanggal_order = now();

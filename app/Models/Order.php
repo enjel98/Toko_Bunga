@@ -9,6 +9,6 @@ class Order extends Model
 {
     protected $table = "orders";
     protected $fillable = [
-        'name_customer', 'qty_order', 'tanggal_order', 'keterangan',
+        'id_products','name_customer', 'qty_order', 'tanggal_order', 'keterangan',
     ];
 }

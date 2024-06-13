@@ -157,12 +157,12 @@
                                 <tbody>
                                     @forelse ($shoppings as $key => $shop)
                                         @php
-                                            $total = $shop->qty_order * 50000;
+                                            $total = $shop->qty_order * $shop->product_price;
                                         @endphp
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $shop->name_customer }}</td>
-                                            <td>Bunga Mawar</td>
+                                            <td>{{$shop->product_name}}</td>
                                             <td>{{ $shop->qty_order }}</td>
                                             <td>{{ $total }}</td>
                                             <td>{{ $shop->keterangan }}</td>
